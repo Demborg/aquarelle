@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <style>
+    body {
+      margin: 0px;
+    }
+    canvas {
+      width: 100%;
+    }
+  </style>
+  <script>
+    const POLYGON = [[100, 100], [200, 100], [200, 200], [100, 200]]
+
+    const drawPolygon = (ctx, points) => {
+        ctx.moveTo(points[0][0], points[0][1])
+        points.forEach(element => {
+            ctx.lineTo(element[0], element[1])
+        });
+        ctx.closePath()
+        ctx.fill()
+    }
+
+    const randomOffset = (scale) => {
+        return scale * (2 * Math.random() - 1)
+    }
+
+    const randomVector = (scale) => {
+        return [randomOffset(scale), randomOffset(scale)]
+    }
+
+    const add = (a, b) => {
+        return [a[0] + b[0], a[1] + b[1]]
+    }
+    
+    const scale = (v, s) => {
+        return [v[0] * s, v[1] * s]
+    }
+
+    const randomizePolygon = (points, scale) => {
+        return points.map(p => add(p, randomVector(scale)))
+    }
+
+    const subdivide = (points) => {
+        return Array.from({length: points.length * 2}, (_, x) => {
+            const i = Math.floor((x + 1) / 2) % points.length
+            const j = Math.round((x + 1) / 2) % points.length
+            return scale(add(points[i], points[j]), 0.5)
+        })
+    }
+
+    const randomDeform = (points, scale) => {
+        points = subdivide(points)
+        return randomizePolygon(points, scale)
+    }
+
+    window.onload = () => {
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        polygon = POLYGON
+
+        for (let i = 0; i <= 3; i++) {
+            polygon = randomDeform(polygon, 10 / Math.pow(1.6, i))
+        }
+
+        drawPolygon(ctx, polygon)
+
+    };
+  </script>
+  <canvas id="canvas" width="1000" , height="1000"></canvas>
+</html>
