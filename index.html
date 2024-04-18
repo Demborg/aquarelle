@@ -76,13 +76,20 @@
     window.onload = () => {
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
-        const base = fractalRandomDeform(
-            circularize(subdivide(POLYGON), [500, 500], 300),
+        const base1 = fractalRandomDeform(
+            circularize(subdivide(POLYGON), add([500, 500], randomVector(100)), Math.random() * 200 + 100),
             3, 40
         )
-        ctx.fillStyle = "rgba(255,0,0,0.01)"
+        const base2 = fractalRandomDeform(
+            circularize(subdivide(POLYGON), add([500, 500], randomVector(100)), Math.random() * 200 + 100),
+            3, 40
+        )
         for (let i = 0; i < 100; i++) {
-            shape = fractalRandomDeform(base, 2, 40)
+            ctx.fillStyle = "rgba(255,0,0,0.01)"
+            shape = fractalRandomDeform(base1, 2, 40)
+            drawPolygon(ctx, shape)
+            ctx.fillStyle = "rgba(0,0,255,0.01)"
+            shape = fractalRandomDeform(base2, 2, 40)
             drawPolygon(ctx, shape)
         }
     };
