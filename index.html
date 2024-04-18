@@ -84,11 +84,16 @@
             circularize(subdivide(POLYGON), add([500, 500], randomVector(100)), Math.random() * 200 + 100),
             3, 40
         )
+
+        const angle = Math.round(Math.random() * 360)
+        const color1 = `hsla(${angle},100%, 50%, 0.01)`
+        const color2 = `hsla(${angle - 180}, 100%, 50%, 0.01)`
+        console.log(color1, color2)
         for (let i = 0; i < 100; i++) {
-            ctx.fillStyle = "rgba(255,0,0,0.01)"
+            ctx.fillStyle = color1
             shape = fractalRandomDeform(base1, 2, 40)
             drawPolygon(ctx, shape)
-            ctx.fillStyle = "rgba(0,0,255,0.01)"
+            ctx.fillStyle = color2
             shape = fractalRandomDeform(base2, 2, 40)
             drawPolygon(ctx, shape)
         }
