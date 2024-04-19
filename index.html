@@ -9,8 +9,6 @@
     }
   </style>
   <script>
-    const POLYGON = [[300, 300], [700, 300], [700, 700], [300, 700]]
-
     const add = (a, b) => {
         return [a[0] + b[0], a[1] + b[1]]
     }
@@ -18,10 +16,6 @@
     const scale = (v, s) => {
         return [v[0] * s, v[1] * s]
     }
-
-    const norm = (vec) => {
-        return Math.sqrt(vec[0] * vec[0] + vec[1] * vec[1])
-    } 
 
     const randomVector = (length) => {
         const theta = 2 * Math.PI * Math.random()
@@ -51,13 +45,10 @@
         })
     }
 
-    const circularize = (points, center, s) => {
-        return points.map(p => {
-            const diff = add(p, scale(center, -1))
-            return add(
-                center,
-                scale(diff, s/norm(diff))
-            )
+    const makeCircle = (center, radius, n) => {
+        return Array.from({length: n}, (_, i) => {
+            const theta = 2 * Math.PI * i / n
+            return add(center, [radius * Math.cos(theta), radius * Math.sin(theta)])
         })
     }
 
@@ -77,11 +68,11 @@
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
         const base1 = fractalRandomDeform(
-            circularize(subdivide(POLYGON), add([500, 500], randomVector(100)), Math.random() * 200 + 100),
+            makeCircle(add([500, 500], randomVector(100)), Math.random() * 200 + 100, 8),
             3, 40
         )
         const base2 = fractalRandomDeform(
-            circularize(subdivide(POLYGON), add([500, 500], randomVector(100)), Math.random() * 200 + 100),
+            makeCircle(add([500, 500], randomVector(100)), Math.random() * 200 + 100, 8),
             3, 40
         )
 
@@ -91,11 +82,9 @@
         console.log(color1, color2)
         for (let i = 0; i < 100; i++) {
             ctx.fillStyle = color1
-            shape = fractalRandomDeform(base1, 2, 40)
-            drawPolygon(ctx, shape)
+            drawPolygon(ctx, fractalRandomDeform(base1, 2, 40))
             ctx.fillStyle = color2
-            shape = fractalRandomDeform(base2, 2, 40)
-            drawPolygon(ctx, shape)
+            drawPolygon(ctx, fractalRandomDeform(base2, 2, 40))
         }
     };
   </script>
