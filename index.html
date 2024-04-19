@@ -77,8 +77,8 @@
         )
 
         const angle = Math.round(Math.random() * 360)
-        const color1 = `hsla(${angle},100%, 50%, 0.01)`
-        const color2 = `hsla(${angle - 120}, 100%, 50%, 0.01)`
+        const color1 = `oklch(70% 0.37 ${angle} / 1%)`
+        const color2 = `oklch(70% 0.37 ${120 - angle} / 1%)`
         console.log(color1, color2)
         for (let i = 0; i < 100; i++) {
             ctx.fillStyle = color1
