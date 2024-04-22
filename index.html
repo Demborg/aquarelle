@@ -30,6 +30,7 @@
             ctx.lineTo(element[0], element[1])
         });
         ctx.closePath()
+        ctx.stroke()
         ctx.fill()
     }
 
@@ -79,12 +80,11 @@
         const angle = Math.round(Math.random() * 360)
         const color1 = `oklch(70% 0.37 ${angle} / 1%)`
         const color2 = `oklch(70% 0.37 ${120 - angle} / 1%)`
-        console.log(color1, color2)
-        for (let i = 0; i < 100; i++) {
+        ctx.lineWidth = 10
+        for (let i = 0; i < 50; i++) {
             ctx.fillStyle = color1
-            drawPolygon(ctx, fractalRandomDeform(base1, 2, 40))
-            ctx.fillStyle = color2
-            drawPolygon(ctx, fractalRandomDeform(base2, 2, 40))
+            ctx.strokeStyle = color1
+            drawPolygon(ctx, fractalRandomDeform(base1, 2, 20))
         }
     };
   </script>
