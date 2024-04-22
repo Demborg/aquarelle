@@ -10,18 +10,18 @@
   </style>
   <script>
     const add = (a, b) => {
-        return [a[0] + b[0], a[1] + b[1]]
+        return [a[0] + b[0], a[1] + b[1], a[2] + b[2]]
     }
     
     const scale = (v, s) => {
-        return [v[0] * s, v[1] * s]
+        return [v[0] * s, v[1] * s, v[2] * s]
     }
 
-    const randomVector = (length) => {
+    const randomVector = (length, randomness=0) => {
         const theta = 2 * Math.PI * Math.random()
         const rho = Math.sqrt(-2 * Math.log(1 - Math.random()))
-        return scale([Math.cos(theta), Math.sin(theta)], rho * length)
-    };
+        return scale([Math.cos(theta), Math.sin(theta), Math.random() * randomness], rho * length)
+    }; 
 
     const drawPolygon = (ctx, points) => {
         ctx.beginPath()
@@ -35,7 +35,7 @@
     }
 
     const randomizePolygon = (points, scale) => {
-        return points.map(p => add(p, randomVector(scale)))
+        return points.map(p => add(p, randomVector(scale * p[2], 0.0001 * scale)))
     }
 
     const subdivide = (points) => {
@@ -49,7 +49,7 @@
     const makeCircle = (center, radius, n) => {
         return Array.from({length: n}, (_, i) => {
             const theta = 2 * Math.PI * i / n
-            return add(center, [radius * Math.cos(theta), radius * Math.sin(theta)])
+            return add(center, [radius * Math.cos(theta), radius * Math.sin(theta), 0.1 + Math.random()])
         })
     }
 
@@ -69,18 +69,15 @@
         const canvas = document.getElementById("canvas");
         const ctx = canvas.getContext("2d");
         const base1 = fractalRandomDeform(
-            makeCircle(add([500, 500], randomVector(100)), Math.random() * 200 + 100, 8),
+            makeCircle(add([500, 500, 0], randomVector(100)), Math.random() * 200 + 100, 8),
             3, 40
         )
-        const base2 = fractalRandomDeform(
-            makeCircle(add([500, 500], randomVector(100)), Math.random() * 200 + 100, 8),
-            3, 40
-        )
+        console.log(base1)
 
         const angle = Math.round(Math.random() * 360)
         const color1 = `oklch(70% 0.37 ${angle} / 1%)`
         const color2 = `oklch(70% 0.37 ${120 - angle} / 1%)`
-        ctx.lineWidth = 10
+        ctx.lineWidth = 5
         for (let i = 0; i < 50; i++) {
             ctx.fillStyle = color1
             ctx.strokeStyle = color1
