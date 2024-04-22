@@ -85,15 +85,22 @@
             makeCircle(add([500, 500, 0], randomVector(100)), Math.random() * 200 + 100, 8),
             3, 40
         )
+        const base2 = fractalRandomDeform(
+            makeCircle(add([500, 500, 0], randomVector(100)), Math.random() * 200 + 100, 8),
+            3, 40
+        )
 
         const angle = Math.round(Math.random() * 360)
         const color1 = `oklch(70% 0.37 ${angle} / 1%)`
-        const color2 = `oklch(70% 0.37 ${120 - angle} / 1%)`
+        const color2 = `oklch(70% 0.37 ${(angle + 120) % 360} / 1%)`
         ctx.lineWidth = 5
         for (let i = 0; i < 50; i++) {
             ctx.fillStyle = color1
             ctx.strokeStyle = color1
             drawPolygon(ctx, fractalRandomDeform(base1, 2, 20))
+            ctx.fillStyle = color2
+            ctx.strokeStyle = color2
+            drawPolygon(ctx, fractalRandomDeform(base2, 2, 20))
             randomTexture(ctx, 50)
         }
     };
