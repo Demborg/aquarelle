@@ -35,7 +35,12 @@
     }
 
     const randomizePolygon = (points, scale) => {
-        return points.map(p => add(p, randomVector(scale * p[2], 0.0001 * scale)))
+        return points.map(p => {
+            const delta = randomVector(scale * p[2], 0.02)
+            let res = add(delta, p)
+            res[2] = Math.min(p[2] * (0.99 + delta[2]), 2)
+            return res
+        })
     }
 
     const subdivide = (points) => {
